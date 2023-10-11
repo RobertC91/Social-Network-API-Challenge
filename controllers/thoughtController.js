@@ -33,10 +33,12 @@ module.exports = {
         { _id: req.body.userId },
         { $addToSet: { thoughts: thought._id } },
         { new: true }
-      )
+      );
 
       if (!user) {
-        return res.status(404).json({ message: 'Thought created, but no user with that ID.' })
+        return res
+          .status(404)
+          .json({ message: "Thought created, but no user with that ID." });
       }
       res.json(user);
     } catch (err) {
@@ -64,16 +66,19 @@ module.exports = {
   //   Delete a thought
   async deleteThought(req, res) {
     try {
-      const thought = await Thought.findByIdAndDelete({
+      const thought = await Thought.findOneAndDelete({
         _id: req.params.thoughtId,
       });
 
       if (!thought) {
         res.status(404).json({ message: "No thought with that ID" });
       }
-
-      await Reaction.deleteMany({ _id: { $in: thought.reactions } });
-      res.json({ message: "Thought and Reactions Deleted!" });
+      await User.findOneAndUpdate(
+        { thoughts: req.params.thoughtId },
+        { $pull: { thoughts: req.params.thoughtId } },
+        { new: true }
+      )
+      res.json({ message: "Thought Deleted!" });
     } catch (err) {
       res.status(500).json(err);
     }
