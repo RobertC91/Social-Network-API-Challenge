@@ -23,11 +23,12 @@ npm start
 ```
 ## Walkthrough Video
 
-
+https://youtu.be/WKuVHWft8Qc
 
 ## Insomnia ScreenShot
 
-
+![Alt text](assets/NoSql_1.png)
+![Alt text](assets/NoSql_2.png)
 
 ### License
 
